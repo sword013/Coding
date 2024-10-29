@@ -28,10 +28,8 @@ public:
                 
                 swaps++;
             }
-            
-          
         }
-
         return swaps;
+        //O(n),O(n)
     }
 };
