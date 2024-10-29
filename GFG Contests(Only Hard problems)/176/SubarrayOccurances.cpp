@@ -1,3 +1,4 @@
+//Try here : https://practice.geeksforgeeks.org/contest/gfg-weekly-176-rated-contest/problems
 class Solution {
   public:
     vector<int> countOccurrences(int n, int q, vector<int> &a,
