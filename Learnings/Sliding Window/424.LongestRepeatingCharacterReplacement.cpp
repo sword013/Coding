@@ -1,6 +1,7 @@
 /*
 https://leetcode.com/problems/longest-repeating-character-replacement/submissions/1455908547/
-Strivers last approach is much better but as of now I dont understand it. Check later !
+
+Code 1:
 Our logic:
     Either you generate all the substrings and do else optimal :
     Sliding window logic :
@@ -15,8 +16,14 @@ Our logic:
         Valid window is a window where others_freq<=k; these are other characters that you will replace with the character having
         the max_freq.
     Thats it! 
+
+Code 2 : 
+Strivers Logic. The explanation of why not to update max_freq is VERY VERY CRUTIAL ! 
+
+Both codes are O(2n),O(1)
 */
 
+/*---------------------------------------------------------------Code 1----------------------------------------------------------- */
 class Solution {
 public:
     int characterReplacement(string s, int k) {
@@ -65,4 +72,43 @@ public:
 
        return maxlen;
     }
+};
+
+/*---------------------------------------------------------------Code 2----------------------------------------------------------- */
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+       int n = s.size();
+       vector<int> freq(26,0);
+       int maxlen=1,l=0,max_freq = 0;
+
+       for(int r=0;r<n;r++){
+            freq[s[r]-'A']++;
+            max_freq=max(max_freq,freq[s[r]-'A']);
+            
+            //int length = r-l+1; //length is variable so dont assign length variable before and use it later
+            while(r-l+1-max_freq>k){   
+                freq[s[l]-'A']--;
+                // for(int i=0;i<26;i++)max_freq =max(max_freq,freq[s[i]-'A']);
+                //no need to do above; check reason in explanation below (1)
+                l++;
+            }
+
+            //window satisfies
+            maxlen=max(maxlen,r-l+1);
+       }
+
+       return maxlen;
+    }
+
+    /*
+    Explanation:
+        aaabc; here max_freq = 3; and length = 5;
+        you have fixed your max_freq here; means you have k=2;
+        theres no sense to decrease your max_freq further as you wont get any better answer;
+        say: max_freq = 2 now; then because k=2; length can be 4 only max, but you already have length 5;
+        (1) can decrease your max_freq as you're moving r ahead. so dont bother to replace max_freq with lesser value now
+        its not wrong to do so, but we are going towards more optimal approach : O(2n*26)->O(2n)
+
+    */
 };
